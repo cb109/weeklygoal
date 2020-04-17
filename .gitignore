@@ -1,0 +1,3 @@
+.py[cod]
+db.sqlite3
+__pycache__/
