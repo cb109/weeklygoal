@@ -1,3 +1,11 @@
+html {
+  background: #f8fff2;
+}
+
+.has-text-app {
+  color: #559c1c !important;
+}
+
 #app {
   display: flex;
   justify-content: center;
@@ -43,7 +51,7 @@
   min-width: 80px;
   max-width: 80px;
   display: flex;
-  margin-right: 12px;
+  margin-right: 8px;
   justify-content: center;
   align-items: flex-end;
   flex-direction: column;
@@ -53,6 +61,7 @@
   border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: 6px;
   min-height: 72px;
+  background: #fff;
 }
 
 .fade-enter-active,
