@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% csrf_token %}
+
 {% verbatim %}
 <div id="app">
   <div
@@ -27,7 +30,7 @@
         v-for="(activity, x) in activities"
         :key="activity + x + y"
         class="col cell activity clickable"
-        @click="toggleCell(x, y)"
+        @click="toggleCell(weekDay.date, activity.id)"
       >
         <div class="image">
           <transition
@@ -35,7 +38,7 @@
             mode="in-out"
           >
             <img
-              v-if="cells[`${x}_${y}`] && activity.image_url"
+              v-if="getCell(weekDay.date, activity.id) && activity.image_url"
               :src="activity.image_url"
             >
           </transition>
@@ -53,6 +56,9 @@
 
 Vue.config.devtools = true;
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+
 window.app = new Vue({
   el: '#app',
   data() {
@@ -62,6 +68,7 @@ window.app = new Vue({
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
       today: '{{ today|safe }}',
+      urls: {{ urls|safe }},
       // Frontend data
       goal: 5,
       cells: {}
@@ -76,9 +83,6 @@ window.app = new Vue({
     this.populateGrid();
   },
   methods: {
-    toggleCell(x, y) {
-      this.$set(this.cells, `${x}_${y}`, !this.cells[`${x}_${y}`]);
-    },
     doesEventExist(date, activityId) {
       for (let i = 0; i < this.currentWeekEvents.length; i++) {
         const event = this.currentWeekEvents[i];
@@ -88,17 +92,46 @@ window.app = new Vue({
       }
       return false;
     },
+    getCellKey(date, activityId) {
+      return `${date}_${activityId}`;
+    },
+    getCell(date, activityId) {
+      const key = this.getCellKey(date, activityId);
+      return this.cells[key];
+    },
     populateGrid() {
       this.cells = {};
-      for (let y = 0; y < this.currentWeek.length; y++) {
-        for (let x = 0; x < this.activities.length; x++) {
-          const initialValue = this.doesEventExist(
-            this.currentWeek[y].date, this.activities[x].id,
-          );
-          this.$set(this.cells, `${x}_${y}`, initialValue);
-        }
+      this.currentWeek.forEach(weekDay => {
+        this.activities.forEach(activity => {
+          const initialValue = this.doesEventExist(weekDay.date, activity.id);
+          const cellKey = this.getCellKey(weekDay.date, activity.id);
+          this.$set(this.cells, cellKey, initialValue);
+        });
+      });
+    },
+    toggleCell(date, activityId) {
+      const hasEvent = this.getCell(date, activityId);
+      if (hasEvent) {
+        const event = this.currentWeekEvents.filter(event => event.date == date)[0];
+        this.httpDeleteEvent(event.id);
       }
-    }
+      else {
+        this.httpCreateEvent(date, activityId);
+      }
+
+      // Update frontend.
+      this.$set(this.cells, this.getCellKey(date, activityId), !hasEvent);
+    },
+    httpCreateEvent(date, activityId) {
+      const payload = {
+        'date': date,
+        'activity': activityId
+      };
+      axios.post(this.urls.create_event, payload);
+    },
+    httpDeleteEvent(eventId) {
+      return axios.delete(this.urls.delete_event + eventId);
+    },
   }
 });
 
