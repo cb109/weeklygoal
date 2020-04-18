@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from weeklygoal.apps.activities.models import Activity, Event
+from weeklygoal.apps.activities.models import Activity, Event, UserSettings
 
 
 def get_image_tag_for_activity(activity, max_width=64, max_height=64):
@@ -48,6 +48,17 @@ class EventAdmin(admin.ModelAdmin):
         return get_image_tag_for_activity(event.activity, max_width=32, max_height=32)
 
 
+class UserSettingsAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "goal",
+        "created_at",
+        "modified_at",
+        "id",
+    )
+
+
 admin.site.site_header = "Weekly Goal Admin"
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(UserSettings, UserSettingsAdmin)

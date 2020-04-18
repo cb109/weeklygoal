@@ -58,8 +58,8 @@
         <p class="control">
           <button
             class="button ml-2 has-color-bg has-text-white"
-            title="Logout"
-            @click="logout()"
+            :title="'Logout ' + username"
+            @click="confirmLogout()"
           >
             <span class="icon has-white-text">
               <i class="fas fa-sign-out-alt"></i>
@@ -158,13 +158,14 @@ window.app = new Vue({
       actualToday: '{{ actual_today|safe }}',
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
+      goal: {{ goal|safe }},
       isoWeekNumber: '{{ iso_weeknumber }}',
       isoYear: '{{ iso_year }}',
       strings: {{ strings|safe }},
       today: '{{ today|safe }}',
       urls: {{ urls|safe }},
+      username: '{{ username|safe }}',
       // Frontend data
-      goal: 5,
       cells: {}
     };
   },
@@ -256,6 +257,12 @@ window.app = new Vue({
     },
     goToNextWeek(today) {
       this.redirectChangeWeek(today, 'next');
+    },
+    confirmLogout() {
+      const confirmed = confirm('Logout '+ this.username + '?');
+      if (confirmed) {
+        this.logout();
+      }
     },
     logout() {
       window.location.replace(this.urls.logout);

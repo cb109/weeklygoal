@@ -9,9 +9,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
-from weeklygoal.apps.activities.models import Activity, Event
-
-# FIXME: Tie objects to a specific User and only return owned data
+from weeklygoal.apps.activities.models import Activity, Event, UserSettings
 
 
 def get_localized_days():
@@ -107,14 +105,21 @@ def app(request):
 
     iso_year, iso_weeknumber, iso_weekday = today.isocalendar()
 
+    try:
+        goal = user.settings.goal
+    except UserSettings.DoesNotExist:
+        goal = 5
+
     context = {
         "activities": serialized_activities,
         "actual_today": format_date(datetime.now().date()),
         "current_week_events": serialized_events,
         "current_week": current_week,
+        "goal": goal,
         "iso_weeknumber": iso_weeknumber,
         "iso_year": iso_year,
         "today": format_date(today),
+        "username": user.username,
         "urls": {
             "logout": reverse("logout"),
             "create_event": reverse("create_event"),

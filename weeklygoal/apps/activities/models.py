@@ -29,6 +29,13 @@ class Activity(BaseModel):
         return self.name
 
 
+class UserSettings(BaseModel):
+    user = models.OneToOneField(
+        "auth.User", on_delete=models.CASCADE, related_name="settings"
+    )
+    goal = models.IntegerField(default=5)
+
+
 class Event(BaseModel):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
 
