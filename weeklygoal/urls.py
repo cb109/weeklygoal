@@ -17,12 +17,20 @@ from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path
+
+from weeklygoal.apps.activities.views import app, redirect_to_app
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("filer/", include("filer.urls")),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("app/", app, name="app"),
 ]
 
 # Serve user-uploaded files.
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = redirect_to_app
