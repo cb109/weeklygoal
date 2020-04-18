@@ -118,6 +118,11 @@ def app(request):
                 "0", ""
             ),
         },
+        "strings": {
+            "today": _("Today"),
+            "next_week": _("Next week"),
+            "previous_week": _("Previous week"),
+        },
     }
     return render(request, "app.html", context,)
 

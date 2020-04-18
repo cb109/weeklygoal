@@ -13,41 +13,54 @@
     <div
       class="row goal"
     >
-      <div class="mt-2 mr-auto col">
-        <div class="has-text-grey-dark">
-          {{ currentWeek[0].date }} - {{ currentWeek[currentWeek.length - 1].date }}
-        </div>
-        <div class="mt-2">
+      <div
+        class="field has-addons mr-auto"
+        style="margin-bottom: 4px"
+      >
+        <p class="control">
           <button
             class="button is-small"
             @click="goToPreviousWeek(today)"
           >
-            <
+            <span class="icon">
+              <i class="fas fa-arrow-left"></i>
+            </span>
+            <span>
+              {{ strings.previous_week }}
+            </span>
           </button>
+        </p>
+        <p class="control">
           <button
             class="button is-small"
             @click="goToActualToday()"
           >
-            {{ actualToday }}
+            <span>
+              {{ strings.today }}
+            </span>
           </button>
+        </p>
+        <p class="control">
           <button
             class="button is-small"
             @click="goToNextWeek(today)"
           >
-            >
+            <span>
+              {{ strings.next_week }}
+            </span>
+            <span class="icon">
+              <i class="fas fa-arrow-right"></i>
+            </span>
           </button>
-        </div>
+        </p>
       </div>
       <div
-        class="is-size-3 has-text-weight-bold"
-        :class="{
-          'has-text-success': goalReached,
-          'has-text-primary': goalClose,
-          'has-text-warning': goalFarAway,
-          'has-text-danger': goalNothingYet,
-        }"
+        v-if="goalReached"
+        class="ml-auto"
       >
-        {{ numEvents }} / {{ goal }}
+        <span class="icon has-text-success">
+          <i class="fas fa-check fa-lg"></i>
+        </span>
       </div>
     </div>
     <div
@@ -57,7 +70,7 @@
     >
       <div
         class="col day"
-        :class="{'today': weekDay.date == today}"
+        :class="{'has-text-weight-bold has-text-primary': weekDay.date == today}"
       >
         <div>
           {{ weekDay.day }}
@@ -105,6 +118,7 @@ window.app = new Vue({
       actualToday: '{{ actual_today|safe }}',
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
+      strings: {{ strings|safe }},
       today: '{{ today|safe }}',
       urls: {{ urls|safe }},
       // Frontend data
@@ -118,15 +132,6 @@ window.app = new Vue({
     },
     goalReached() {
       return this.numEvents >= this.goal;
-    },
-    goalClose() {
-      return this.numEvents >= this.goal / 2;
-    },
-    goalFarAway() {
-      return this.numEvents <= 1;
-    },
-    goalNothingYet() {
-      return this.numEvents == 0;
     },
   },
   created() {

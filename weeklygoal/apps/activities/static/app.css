@@ -1,6 +1,7 @@
 #app {
   display: flex;
   justify-content: center;
+  margin: 8px;
 }
 
 .dbg {
@@ -11,7 +12,6 @@
 }
 
 .grid {
-  margin: 10px;
   height: calc(100vh - 40px);
   display: flex;
   flex: 1;
@@ -39,7 +39,6 @@
 .col.cell.activity:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
-
 .col.day {
   min-width: 80px;
   max-width: 80px;
@@ -49,10 +48,6 @@
   align-items: flex-end;
   flex-direction: column;
 }
-.col.day.today {
-  font-weight: bold;
-}
-
 .col.cell {
   margin: 4px;
   border: 1px solid rgba(0, 0, 0, 0.04);
