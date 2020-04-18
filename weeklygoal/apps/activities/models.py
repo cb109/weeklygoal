@@ -18,6 +18,7 @@ class BaseModel(models.Model):
 
 
 class Activity(BaseModel):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     name = models.CharField(max_length=128)
     image = FilerImageField(

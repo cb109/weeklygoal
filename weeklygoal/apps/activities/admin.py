@@ -21,11 +21,15 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "active",
+        "user_name",
         "image_preview",
         "created_at",
         "modified_at",
         "id",
     )
+
+    def user_name(self, activity):
+        return activity.user.username
 
     def image_preview(self, activity):
         return get_image_tag_for_activity(activity)

@@ -68,6 +68,8 @@ def app(request):
         html, including a Vue app
 
     """
+    user = request.user
+
     # Handle optional reference date
     today = datetime.now().date()
     reference_date = request.GET.get("day")
@@ -78,7 +80,7 @@ def app(request):
             pass
 
     # Serialize available Activities
-    activities = Activity.objects.filter(active=True)
+    activities = Activity.objects.filter(active=True, user=user)
     serialized_activities = [
         {
             "id": activity.id,
@@ -99,7 +101,7 @@ def app(request):
 
     # Serialize Events for current week
     current_week_events = Event.objects.filter(
-        created_at__date__in=current_week_dates
+        created_at__date__in=current_week_dates, activity__in=activities
     ).order_by("-created_at")
     serialized_events = [serialize_event(event) for event in current_week_events]
 
