@@ -98,10 +98,21 @@
             name="fade"
             mode="in-out"
           >
-            <img
-              v-if="getCell(weekDay.date, activity.id) && activity.image_url"
-              :src="activity.image_url"
+            <div
+              v-if="getCell(weekDay.date, activity.id)"
             >
+              <img
+                v-if="activity.image_url"
+                style="padding: 4px"
+                :src="activity.image_url"
+              >
+              <span
+                v-else
+                class="has-text-white"
+              >
+                <i class="fas fa-check-circle fa-2x"></i>
+              </span>
+            </div>
           </transition>
         </div>
       </div>
