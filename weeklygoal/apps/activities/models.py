@@ -18,7 +18,7 @@ class BaseModel(models.Model):
 class Activity(BaseModel):
     name = models.CharField(max_length=128)
     image = FilerImageField(
-        null=True, blank=True, related_name="image_activity", on_delete=models.CASCADE
+        null=True, blank=True, related_name="image_activity", on_delete=models.SET_NULL
     )
 
     def __str__(self):
