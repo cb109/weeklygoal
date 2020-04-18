@@ -131,3 +131,5 @@ LOGOUT_REDIRECT_URL = "login"
 DATE_FORMAT = "%d.%m.%Y"
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 1  # One year
