@@ -20,6 +20,7 @@ def get_image_tag_for_activity(activity, max_width=64, max_height=64):
 class ActivityAdmin(admin.ModelAdmin):
     list_display = (
         "name",
+        "active",
         "image_preview",
         "created_at",
         "modified_at",

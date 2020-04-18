@@ -18,6 +18,7 @@ class BaseModel(models.Model):
 
 
 class Activity(BaseModel):
+    active = models.BooleanField(default=True)
     name = models.CharField(max_length=128)
     image = FilerImageField(
         null=True, blank=True, related_name="image_activity", on_delete=models.SET_NULL

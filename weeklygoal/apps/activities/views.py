@@ -78,7 +78,7 @@ def app(request):
             pass
 
     # Serialize available Activities
-    activities = Activity.objects.all()
+    activities = Activity.objects.filter(active=True)
     serialized_activities = [
         {
             "id": activity.id,
