@@ -13,7 +13,12 @@
       class="row"
     >
       <div class="col day">
-        {{ weekDay.day }}
+        <div>
+          {{ weekDay.day }}
+        </div>
+        <div class="is-size-7 has-text-grey">
+          {{ weekDay.date }}
+        </div>
       </div>
       <div
         v-for="(activity, x) in activities"
@@ -34,10 +39,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="row"
-      style="flex-grow: 0"
-    >
+    <div class="row">
       {{ numEvents }} / {{ goal }}
     </div>
   </div>
