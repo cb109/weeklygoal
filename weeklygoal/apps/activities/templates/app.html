@@ -11,16 +11,15 @@
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
-      class="row goal"
+      class="row goal mt-2"
+      style="max-height: 30px"
     >
-      <div style="min-width: 24px"></div>
       <div
-        class="field has-addons ml-auto mr-auto"
-        style="margin-bottom: 4px"
+        class="field has-addons mr-2"
       >
         <p class="control">
           <button
-            class="button is-small"
+            class="button is-small has-color-bg has-text-white"
             @click="goToPreviousWeek(today)"
           >
             <span class="icon">
@@ -33,17 +32,7 @@
         </p>
         <p class="control">
           <button
-            class="button is-small"
-            @click="goToActualToday()"
-          >
-            <span>
-              {{ strings.today }}
-            </span>
-          </button>
-        </p>
-        <p class="control">
-          <button
-            class="button is-small"
+            class="button is-small has-color-bg has-text-white"
             @click="goToNextWeek(today)"
           >
             <span>
@@ -56,12 +45,26 @@
         </p>
       </div>
       <div
+        class="field has-addons"
+      >
+        <p class="control">
+          <button
+            class="button is-small has-color-bg has-text-white"
+            @click="goToActualToday()"
+          >
+            <span>
+              {{ strings.today }}
+            </span>
+          </button>
+        </p>
+      </div>
+      <div
         class="ml-auto"
         style="min-width: 24px"
       >
         <span
           v-if="goalReached"
-          class="icon has-text-success"
+          class="icon has-text-white ml-1"
         >
           <i class="fas fa-check fa-lg"></i>
         </span>
@@ -73,13 +76,13 @@
       class="row week"
     >
       <div
-        class="col day"
-        :class="{'has-text-weight-bold has-text-app': weekDay.date == today}"
+        class="col day has-text-white has-text-weight-semibold"
+        :class="{'has-text-app': weekDay.date == today}"
       >
         <div>
           {{ weekDay.day }}
         </div>
-        <div class="is-size-7 has-text-grey">
+        <div class="is-size-7">
           {{ weekDay.date }}
         </div>
       </div>
@@ -87,6 +90,7 @@
         v-for="(activity, x) in activities"
         :key="activity + x + y"
         class="col cell activity clickable"
+        :class="{'has-border-app': weekDay.date == today}"
         @click="toggleCell(weekDay.date, activity.id)"
       >
         <div class="image">
