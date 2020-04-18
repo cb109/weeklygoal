@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from django.conf import settings
@@ -9,6 +10,8 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
 from weeklygoal.apps.activities.models import Activity, Event
+
+# FIXME: Tie objects to a specific User and only return owned data
 
 
 def get_localized_days():
@@ -99,5 +102,30 @@ def app(request):
         "current_week_events": serialized_events,
         "current_week": current_week,
         "today": format_date(today),
+        "urls": {
+            "create_event": reverse("create_event"),
+            "delete_event": reverse("delete_event", kwargs={"event_id": 0}).replace(
+                "0", ""
+            ),
+        },
     }
     return render(request, "app.html", context,)
+
+
+@login_required
+@require_http_methods(("POST",))
+def create_event(request):
+    data = json.loads(request.body.decode("utf-8"))
+
+    activity = Activity.objects.get(id=data["activity"])
+    date = string_to_date(data["date"])
+
+    Event.objects.create(activity=activity, created_at=date)
+    return HttpResponse(status=200)
+
+
+@login_required
+@require_http_methods(("DELETE",))
+def delete_event(request, event_id):
+    Event.objects.get(id=event_id).delete()
+    return HttpResponse(status=204)

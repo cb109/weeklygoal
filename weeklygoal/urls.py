@@ -20,18 +20,24 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from weeklygoal.apps.activities.views import app, redirect_to_app
+from weeklygoal.apps.activities import views as api
 
 urlpatterns = [
+    # Admin
     path("admin/", admin.site.urls),
     path("filer/", include("filer.urls")),
+    # Authentication
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("app/", app, name="app"),
-    path("", app, name="app"),
+    # API
+    path("api/event/create", api.create_event, name="create_event"),
+    path("api/event/delete/<int:event_id>", api.delete_event, name="delete_event"),
+    # Frontend
+    path("app/", api.app, name="app"),
+    path("", api.app, name="app"),
 ]
 
-# Serve user-uploaded files.
+# Serve uploaded images
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = redirect_to_app
+handler404 = api.redirect_to_app
