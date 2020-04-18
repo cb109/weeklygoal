@@ -5,20 +5,20 @@
 <div id="app">
   <div
     class="grid"
-    :style="{'max-width': 90 + (actions.length * 110) + 'px'}"
+    :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
-      v-for="(day, y) in days"
-      :key="day.value + y"
+      v-for="(weekDay, y) in currentWeek"
+      :key="weekDay.date + y"
       class="row"
     >
       <div class="col day">
-        {{ day.label }}
+        {{ weekDay.day }}
       </div>
       <div
-        v-for="(action, x) in actions"
-        :key="action + x + y"
-        class="col cell action clickable"
+        v-for="(activity, x) in activities"
+        :key="activity + x + y"
+        class="col cell activity clickable"
         @click="toggleCell(x, y)"
       >
         <div class="image">
@@ -27,8 +27,8 @@
             mode="in-out"
           >
             <img
-              v-if="cells[`${x}_${y}`]"
-              :src="action.image"
+              v-if="cells[`${x}_${y}`] && activity.image_url"
+              :src="activity.image_url"
             >
           </transition>
         </div>
@@ -38,7 +38,7 @@
       class="row"
       style="flex-grow: 0"
     >
-      {{ numActions }} / {{ goal }}
+      {{ numEvents }} / {{ goal }}
     </div>
   </div>
 </div>
@@ -52,45 +52,44 @@ window.app = new Vue({
   el: '#app',
   data() {
     return {
+      // Backend data
+      activities: {{ activities|safe }},
+      currentWeek: {{ current_week|safe }},
+      currentWeekEvents: {{ current_week_events|safe }},
+      // Frontend data
       goal: 5,
-      days: {{ days|safe }},
-      actions: [
-        {
-          name: 'Reading',
-          color: 'red',
-          image: 'https://img.icons8.com/dusk/64/000000/bookmark.png',
-        },
-        {
-          name: 'Meditation',
-          color: 'blue',
-          image: 'http://icon-library.com/images/14-512_77226.png',
-        },
-        {
-          name: 'Running',
-          color: 'green',
-          image: 'https://img.icons8.com/cotton/64/000000/trainers.png',
-        },
-      ],
       cells: {}
     };
   },
   computed: {
-    numActions() {
+    numEvents() {
       return Object.keys(this.cells).filter(key => !!this.cells[key]).length;
     },
   },
   created() {
-    this.populateCells();
+    this.populateGrid();
   },
   methods: {
     toggleCell(x, y) {
       this.$set(this.cells, `${x}_${y}`, !this.cells[`${x}_${y}`]);
     },
-    populateCells() {
+    doesEventExist(date, activityId) {
+      for (let i = 0; i < this.currentWeekEvents.length; i++) {
+        const event = this.currentWeekEvents[i];
+        if (event.date == date && event.activity == activityId) {
+          return true;
+        }
+      }
+      return false;
+    },
+    populateGrid() {
       this.cells = {};
-      for (let y = 0; y < this.days.length; y++) {
-        for (let x = 0; x < this.actions.length; x++) {
-          this.$set(this.cells, `${x}_${y}`, false);
+      for (let y = 0; y < this.currentWeek.length; y++) {
+        for (let x = 0; x < this.activities.length; x++) {
+          const initialValue = this.doesEventExist(
+            this.currentWeek[y].date, this.activities[x].id,
+          );
+          this.$set(this.cells, `${x}_${y}`, initialValue);
         }
       }
     }

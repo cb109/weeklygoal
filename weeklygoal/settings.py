@@ -129,3 +129,5 @@ LOGIN_REDIRECT_URL = "app"
 LOGOUT_REDIRECT_URL = "login"
 
 ALLOWED_HOSTS = ["*"]
+
+DATE_FORMAT = "%d.%m.%Y"
