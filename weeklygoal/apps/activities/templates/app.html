@@ -11,20 +11,49 @@
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
-      class="row goal is-size-3"
-      :class="{
-        'has-text-success': goalReached,
-        'has-text-primary': goalClose,
-        'has-text-warning': goalFarAway,
-        'has-text-danger': goalNothingYet,
-      }"
+      class="row goal"
     >
-      {{ numEvents }} / {{ goal }}
+      <div class="mt-2 mr-auto col">
+        <div class="has-text-grey-dark">
+          {{ currentWeek[0].date }} - {{ currentWeek[currentWeek.length - 1].date }}
+        </div>
+        <div class="mt-2">
+          <button
+            class="button is-small"
+            @click="goToPreviousWeek(today)"
+          >
+            <
+          </button>
+          <button
+            class="button is-small"
+            @click="goToActualToday()"
+          >
+            {{ actualToday }}
+          </button>
+          <button
+            class="button is-small"
+            @click="goToNextWeek(today)"
+          >
+            >
+          </button>
+        </div>
+      </div>
+      <div
+        class="is-size-3 has-text-weight-bold"
+        :class="{
+          'has-text-success': goalReached,
+          'has-text-primary': goalClose,
+          'has-text-warning': goalFarAway,
+          'has-text-danger': goalNothingYet,
+        }"
+      >
+        {{ numEvents }} / {{ goal }}
+      </div>
     </div>
     <div
       v-for="(weekDay, y) in currentWeek"
       :key="weekDay.date + y"
-      class="row"
+      class="row week"
     >
       <div
         class="col day"
@@ -73,6 +102,7 @@ window.app = new Vue({
     return {
       // Backend data
       activities: {{ activities|safe }},
+      actualToday: '{{ actual_today|safe }}',
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
       today: '{{ today|safe }}',
@@ -142,6 +172,7 @@ window.app = new Vue({
       // Update frontend.
       this.$set(this.cells, this.getCellKey(date, activityId), !hasEvent);
     },
+
     httpCreateEvent(date, activityId) {
       const payload = {
         'date': date,
@@ -160,6 +191,24 @@ window.app = new Vue({
           // Update frontend.
           this.currentWeekEvents = this.currentWeekEvents.filter(event => event.id !== eventId);
         });
+    },
+    redirectChangeWeek(today, direction) {
+      const url = this.urls.change_week + direction + "?day=" + today;
+      axios.get(url)
+        .then(response => {
+          const nextUrl = response.data.next_url;
+          window.location.replace(nextUrl);
+        });
+    },
+    goToPreviousWeek(today) {
+      this.redirectChangeWeek(today, 'previous');
+    },
+    goToActualToday(actual_today) {
+      const nextUrl = "/?day=" + actual_today;
+      window.location.replace(nextUrl);
+    },
+    goToNextWeek(today) {
+      this.redirectChangeWeek(today, 'next');
     },
   }
 });

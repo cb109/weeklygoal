@@ -32,6 +32,7 @@ urlpatterns = [
     # API
     path("api/event/create", api.create_event, name="create_event"),
     path("api/event/delete/<int:event_id>", api.delete_event, name="delete_event"),
+    path("api/week/<str:direction>", api.change_week, name="change_week"),
     # Frontend
     path("app/", api.app, name="app"),
     path("", api.app, name="app"),

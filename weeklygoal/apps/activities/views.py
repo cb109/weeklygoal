@@ -47,6 +47,13 @@ def serialize_event(event):
     }
 
 
+def get_weekstart_for_date(today):
+    today_index = today.weekday()
+    offset_to_monday = today_index
+    monday = today - timedelta(days=offset_to_monday)
+    return monday
+
+
 @login_required
 @require_http_methods(("GET",))
 def app(request):
@@ -83,9 +90,7 @@ def app(request):
 
     # Serialize current week dates
     localized_days = get_localized_days()
-    today_index = today.weekday()
-    offset_to_monday = today_index
-    monday = today - timedelta(days=offset_to_monday)
+    monday = get_weekstart_for_date(today)
     current_week_dates = [monday + timedelta(days=offset) for offset in range(7)]
     current_week = [
         {"date": format_date(date), "day": localized_days[i],}
@@ -100,12 +105,16 @@ def app(request):
 
     context = {
         "activities": serialized_activities,
+        "actual_today": format_date(datetime.now().date()),
         "current_week_events": serialized_events,
         "current_week": current_week,
         "today": format_date(today),
         "urls": {
             "create_event": reverse("create_event"),
             "delete_event": reverse("delete_event", kwargs={"event_id": 0}).replace(
+                "0", ""
+            ),
+            "change_week": reverse("change_week", kwargs={"direction": "0"}).replace(
                 "0", ""
             ),
         },
@@ -131,3 +140,18 @@ def create_event(request):
 def delete_event(request, event_id):
     Event.objects.get(id=event_id).delete()
     return HttpResponse(status=204)
+
+
+@login_required
+@require_http_methods(("GET",))
+def change_week(request, direction):
+    assert direction in ("previous", "next")
+
+    day = string_to_date(request.GET["day"]).date()
+    if direction == "previous":
+        weekstart = day - timedelta(days=7)
+    elif direction == "next":
+        weekstart = day + timedelta(days=7)
+
+    next_url = reverse("app") + "?day=" + format_date(weekstart)
+    return JsonResponse({"next_url": next_url})
