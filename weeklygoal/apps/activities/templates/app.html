@@ -13,8 +13,9 @@
     <div
       class="row goal"
     >
+      <div style="min-width: 24px"></div>
       <div
-        class="field has-addons mr-auto"
+        class="field has-addons ml-auto mr-auto"
         style="margin-bottom: 4px"
       >
         <p class="control">
@@ -55,10 +56,13 @@
         </p>
       </div>
       <div
-        v-if="goalReached"
         class="ml-auto"
+        style="min-width: 24px"
       >
-        <span class="icon has-text-success">
+        <span
+          v-if="goalReached"
+          class="icon has-text-success"
+        >
           <i class="fas fa-check fa-lg"></i>
         </span>
       </div>
