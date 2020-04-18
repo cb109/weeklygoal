@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext as _
 from filer.fields.image import FilerImageField
 
@@ -10,11 +9,11 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=datetime.now)
+    modified_at = models.DateTimeField(default=datetime.now)
 
     def save(self, *args, **kwargs):
-        self.modified_at = timezone.now()
+        self.modified_at = datetime.now()
         super().save(*args, **kwargs)
 
 
