@@ -12,7 +12,10 @@
       :key="weekDay.date + y"
       class="row"
     >
-      <div class="col day">
+      <div
+        class="col day"
+        :class="{'today': weekDay.date == today}"
+      >
         <div>
           {{ weekDay.day }}
         </div>
@@ -58,6 +61,7 @@ window.app = new Vue({
       activities: {{ activities|safe }},
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
+      today: '{{ today|safe }}',
       // Frontend data
       goal: 5,
       cells: {}

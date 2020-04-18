@@ -32,9 +32,33 @@ def format_date(date):
     return date.strftime(settings.DATE_FORMAT)
 
 
+def string_to_date(date_str):
+    return datetime.strptime(date_str, settings.DATE_FORMAT)
+
+
 @login_required
 @require_http_methods(("GET",))
 def app(request):
+    """Render the current week as a table of day * activity.
+
+    GET Args:
+        day (str): Optional reference date formatted as 'DD.MM.YYYY'.
+            If not specified, today's date is used. If specified, the
+            current week is based on that day (Mo - Fr).
+
+    Returns:
+        html, including a Vue app
+
+    """
+    # Handle optional reference date
+    today = datetime.now().date()
+    reference_date = request.GET.get("day")
+    if reference_date is not None:
+        try:
+            today = string_to_date(reference_date)
+        except ValueError as err:
+            pass
+
     # Serialize available Activities
     activities = Activity.objects.all()
     serialized_activities = [
@@ -48,7 +72,6 @@ def app(request):
 
     # Serialize current week dates
     localized_days = get_localized_days()
-    today = datetime.now().date()
     today_index = today.weekday()
     offset_to_monday = today_index
     monday = today - timedelta(days=offset_to_monday)
@@ -71,12 +94,10 @@ def app(request):
         for event in current_week_events
     ]
 
-    return render(
-        request,
-        "app.html",
-        {
-            "activities": serialized_activities,
-            "current_week": current_week,
-            "current_week_events": serialized_events,
-        },
-    )
+    context = {
+        "activities": serialized_activities,
+        "current_week_events": serialized_events,
+        "current_week": current_week,
+        "today": format_date(today),
+    }
+    return render(request, "app.html", context,)
