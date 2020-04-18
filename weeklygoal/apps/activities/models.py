@@ -20,3 +20,6 @@ class Activity(BaseModel):
     image = FilerImageField(
         null=True, blank=True, related_name="image_activity", on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return self.name
