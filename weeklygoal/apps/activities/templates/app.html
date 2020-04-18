@@ -18,7 +18,7 @@
       <div
         v-for="(action, x) in actions"
         :key="action + x + y"
-        class="col cell clickable"
+        class="col cell action clickable"
         @click="toggleCell(x, y)"
       >
         <div class="image">
@@ -42,6 +42,7 @@
     </div>
   </div>
 </div>
+{% endverbatim %}
 
 <script>
 
@@ -52,15 +53,7 @@ window.app = new Vue({
   data() {
     return {
       goal: 5,
-      days: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ],
+      days: {{ days|safe }},
       actions: [
         {
           name: 'Reading',
@@ -105,5 +98,4 @@ window.app = new Vue({
 });
 
 </script>
-{% endverbatim %}
 {% endblock %}
