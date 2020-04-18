@@ -129,3 +129,5 @@ LOGIN_REDIRECT_URL = "app"
 LOGOUT_REDIRECT_URL = "login"
 
 DATE_FORMAT = "%d.%m.%Y"
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]

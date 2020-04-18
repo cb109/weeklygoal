@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-18 19:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\weeklygoal\apps\activities\views.py:20
+msgid "Monday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:21
+msgid "Tuesday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:22
+msgid "Wednesday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:23
+msgid "Thursday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:24
+msgid "Friday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:25
+msgid "Saturday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:26
+msgid "Sunday"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:122
+msgid "Today"
+msgstr ""
+
+#: .\weeklygoal\apps\activities\views.py:123
+msgid "Next week"
+msgstr "Nächste Woche"
+
+#: .\weeklygoal\apps\activities\views.py:124
+msgid "Previous week"
+msgstr "Vorige Woche"
