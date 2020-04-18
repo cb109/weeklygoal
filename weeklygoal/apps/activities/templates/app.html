@@ -9,11 +9,11 @@
   >
     <div
       v-for="(day, y) in days"
-      :key="day + y"
+      :key="day.value + y"
       class="row"
     >
       <div class="col day">
-        {{ day }}
+        {{ day.label }}
       </div>
       <div
         v-for="(action, x) in actions"
