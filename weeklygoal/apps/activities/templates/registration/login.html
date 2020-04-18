@@ -3,10 +3,36 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
+
+<div
+  class="has-text-white container is-fluid dbg2"
+  style="margin-top: 25%; max-width: 480px"
+>
+  <h2 class="title has-text-white">Login</h2>
+  <h3 class="subtitle has-text-white">Weekly Goal</h3>
+  <form class="form" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
+    <div class="field">
+      <label class="label has-text-white">User</label>
+      <div class="control">
+        <input class="input" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label has-text-white">Password</label>
+      <div class="control">
+        <input class="input" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+      </div>
+    </div>
+    <div class="row mt-3">
+      <button
+        type="submit"
+        class="button is-success ml-auto"
+      >
+        Login
+      </button>
+    </div>
   </form>
+</div>
+
 {% endblock %}

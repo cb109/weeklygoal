@@ -53,6 +53,21 @@
         </p>
       </div>
       <div
+        class="field has-addons"
+      >
+        <p class="control">
+          <button
+            class="button ml-2 has-color-bg has-text-white"
+            title="Logout"
+            @click="logout()"
+          >
+            <span class="icon has-white-text">
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+          </button>
+        </p>
+      </div>
+      <div
         class="has-color-bg has-text-white ml-auto mr-2"
         style="margin-bottom: 12px"
       >
@@ -106,12 +121,18 @@
                 style="padding: 4px"
                 :src="activity.image_url"
               >
-              <span
+              <div
                 v-else
-                class="has-text-white"
+                class="column has-text-white has-text-centered"
               >
                 <i class="fas fa-check-circle fa-2x"></i>
-              </span>
+                <div
+                  class="mt-2"
+                  style="font-size: 10px"
+                >
+                  {{ activity.name }}
+                </div>
+              </div>
             </div>
           </transition>
         </div>
@@ -235,6 +256,9 @@ window.app = new Vue({
     },
     goToNextWeek(today) {
       this.redirectChangeWeek(today, 'next');
+    },
+    logout() {
+      window.location.replace(this.urls.logout);
     },
   }
 });

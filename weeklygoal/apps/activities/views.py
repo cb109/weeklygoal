@@ -116,6 +116,7 @@ def app(request):
         "iso_year": iso_year,
         "today": format_date(today),
         "urls": {
+            "logout": reverse("logout"),
             "create_event": reverse("create_event"),
             "delete_event": reverse("delete_event", kwargs={"event_id": 0}).replace(
                 "0", ""
