@@ -1,3 +1,4 @@
-.py[cod]
-db.sqlite3
 __pycache__/
+.py[cod]
+Activate.ps1
+db.sqlite3
