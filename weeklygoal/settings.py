@@ -25,7 +25,7 @@ SECRET_KEY = "%tah__4-tz!s(cw6k*wsr4a@gnk(f9bto(ly7432#a@0c@gw-$"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -118,7 +118,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "public")
 STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -127,7 +127,5 @@ MEDIA_URL = "/media/"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "app"
 LOGOUT_REDIRECT_URL = "login"
-
-ALLOWED_HOSTS = ["*"]
 
 DATE_FORMAT = "%d.%m.%Y"

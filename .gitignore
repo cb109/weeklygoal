@@ -3,4 +3,4 @@ __pycache__/
 Activate.ps1
 db.sqlite3
 media/
-static/
+public/
