@@ -1,7 +1,109 @@
 {% extends "base.html" %}
 
-{% block title %}App{% endblock %}
-
 {% block content %}
-app
+{% verbatim %}
+<div id="app">
+  <div
+    class="grid"
+    :style="{'max-width': 90 + (actions.length * 110) + 'px'}"
+  >
+    <div
+      v-for="(day, y) in days"
+      :key="day + y"
+      class="row"
+    >
+      <div class="col day">
+        {{ day }}
+      </div>
+      <div
+        v-for="(action, x) in actions"
+        :key="action + x + y"
+        class="col cell clickable"
+        @click="toggleCell(x, y)"
+      >
+        <div class="image">
+          <transition
+            name="fade"
+            mode="in-out"
+          >
+            <img
+              v-if="cells[`${x}_${y}`]"
+              :src="action.image"
+            >
+          </transition>
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+      style="flex-grow: 0"
+    >
+      {{ numActions }} / {{ goal }}
+    </div>
+  </div>
+</div>
+
+<script>
+
+Vue.config.devtools = true;
+
+window.app = new Vue({
+  el: '#app',
+  data() {
+    return {
+      goal: 5,
+      days: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+      ],
+      actions: [
+        {
+          name: 'Reading',
+          color: 'red',
+          image: 'https://img.icons8.com/dusk/64/000000/bookmark.png',
+        },
+        {
+          name: 'Meditation',
+          color: 'blue',
+          image: 'http://icon-library.com/images/14-512_77226.png',
+        },
+        {
+          name: 'Running',
+          color: 'green',
+          image: 'https://img.icons8.com/cotton/64/000000/trainers.png',
+        },
+      ],
+      cells: {}
+    };
+  },
+  computed: {
+    numActions() {
+      return Object.keys(this.cells).filter(key => !!this.cells[key]).length;
+    },
+  },
+  created() {
+    this.populateCells();
+  },
+  methods: {
+    toggleCell(x, y) {
+      this.$set(this.cells, `${x}_${y}`, !this.cells[`${x}_${y}`]);
+    },
+    populateCells() {
+      this.cells = {};
+      for (let y = 0; y < this.days.length; y++) {
+        for (let x = 0; x < this.actions.length; x++) {
+          this.$set(this.cells, `${x}_${y}`, false);
+        }
+      }
+    }
+  }
+});
+
+</script>
+{% endverbatim %}
 {% endblock %}
