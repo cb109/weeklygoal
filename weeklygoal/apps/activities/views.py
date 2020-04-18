@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -37,6 +37,14 @@ def format_date(date):
 
 def string_to_date(date_str):
     return datetime.strptime(date_str, settings.DATE_FORMAT)
+
+
+def serialize_event(event):
+    return {
+        "id": event.id,
+        "date": format_date(event.created_at),
+        "activity": event.activity_id,
+    }
 
 
 @login_required
@@ -88,14 +96,7 @@ def app(request):
     current_week_events = Event.objects.filter(
         created_at__date__in=current_week_dates
     ).order_by("-created_at")
-    serialized_events = [
-        {
-            "id": event.id,
-            "date": format_date(event.created_at),
-            "activity": event.activity_id,
-        }
-        for event in current_week_events
-    ]
+    serialized_events = [serialize_event(event) for event in current_week_events]
 
     context = {
         "activities": serialized_activities,
@@ -120,8 +121,9 @@ def create_event(request):
     activity = Activity.objects.get(id=data["activity"])
     date = string_to_date(data["date"])
 
-    Event.objects.create(activity=activity, created_at=date)
-    return HttpResponse(status=200)
+    event = Event.objects.create(activity=activity, created_at=date)
+    serialized_event = serialize_event(event)
+    return JsonResponse(serialized_event, status=200)
 
 
 @login_required

@@ -147,10 +147,19 @@ window.app = new Vue({
         'date': date,
         'activity': activityId
       };
-      axios.post(this.urls.create_event, payload);
+      axios.post(this.urls.create_event, payload)
+        .then(response => {
+          // Update frontend.
+          const event = response.data;
+          this.currentWeekEvents.push(event);
+        });
     },
     httpDeleteEvent(eventId) {
-      return axios.delete(this.urls.delete_event + eventId);
+      return axios.delete(this.urls.delete_event + eventId)
+        .then(() => {
+          // Update frontend.
+          this.currentWeekEvents = this.currentWeekEvents.filter(event => event.id !== eventId);
+        });
     },
   }
 });
