@@ -11,6 +11,17 @@
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
+      class="row goal is-size-3"
+      :class="{
+        'has-text-success': goalReached,
+        'has-text-primary': goalClose,
+        'has-text-warning': goalFarAway,
+        'has-text-danger': goalNothingYet,
+      }"
+    >
+      {{ numEvents }} / {{ goal }}
+    </div>
+    <div
       v-for="(weekDay, y) in currentWeek"
       :key="weekDay.date + y"
       class="row"
@@ -45,9 +56,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      {{ numEvents }} / {{ goal }}
-    </div>
   </div>
 </div>
 {% endverbatim %}
@@ -77,6 +85,18 @@ window.app = new Vue({
   computed: {
     numEvents() {
       return Object.keys(this.cells).filter(key => !!this.cells[key]).length;
+    },
+    goalReached() {
+      return this.numEvents >= this.goal;
+    },
+    goalClose() {
+      return this.numEvents >= this.goal / 2;
+    },
+    goalFarAway() {
+      return this.numEvents <= 1;
+    },
+    goalNothingYet() {
+      return this.numEvents == 0;
     },
   },
   created() {
