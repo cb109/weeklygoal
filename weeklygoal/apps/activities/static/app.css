@@ -52,7 +52,8 @@ html {
 .col.day {
   min-width: 80px;
   display: flex;
-  margin-right: 8px;
+  margin-left: 4px;
+  margin-right: 4px;
   justify-content: center;
   align-items: flex-end;
   flex-direction: column;
@@ -93,18 +94,30 @@ html {
   margin-left: 8px;
 }
 
-.mr-2 {
-  margin-right: 8px;
-}
-
-.mt-2 {
-  margin-top: 8px;
+.ml-3 {
+  margin-left: 16px;
 }
 
 .ml-auto {
   margin-left: auto;
 }
 
+.mr-2 {
+  margin-right: 8px;
+}
+
 .mr-auto {
   margin-right: auto;
+}
+
+.mt-2 {
+  margin-top: 8px;
+}
+
+.mb-1 {
+  margin-bottom: 4px;
+}
+
+.mb-2 {
+  margin-bottom: 8px;
 }

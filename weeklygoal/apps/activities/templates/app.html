@@ -7,11 +7,11 @@
 {% verbatim %}
 <div id="app">
   <div
-    class="grid"
+    class="grid dbg2"
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
-      class="row goal mt-2"
+      class="row goal mt-2 mb-1"
       style="max-height: 30px"
     >
       <div
@@ -19,25 +19,19 @@
       >
         <p class="control">
           <button
-            class="button is-small has-color-bg has-text-white"
+            class="button has-color-bg has-text-white"
             @click="goToPreviousWeek(today)"
           >
             <span class="icon">
               <i class="fas fa-arrow-left"></i>
             </span>
-            <span>
-              {{ strings.previous_week }}
-            </span>
           </button>
         </p>
         <p class="control">
           <button
-            class="button is-small has-color-bg has-text-white"
+            class="button has-color-bg has-text-white"
             @click="goToNextWeek(today)"
           >
-            <span>
-              {{ strings.next_week }}
-            </span>
             <span class="icon">
               <i class="fas fa-arrow-right"></i>
             </span>
@@ -49,7 +43,7 @@
       >
         <p class="control">
           <button
-            class="button is-small has-color-bg has-text-white"
+            class="button has-color-bg has-text-white"
             @click="goToActualToday(actualToday)"
           >
             <span>
@@ -59,11 +53,17 @@
         </p>
       </div>
       <div
-        class="ml-auto"
+        class="has-color-bg has-text-white ml-auto mr-2"
+        style="margin-bottom: 12px"
+      >
+        {{ isoYear }}, {{ strings.week }} {{ isoWeekNumber }}
+      </div>
+      <div
+        v-if="goalReached"
+        class="mb-1"
         style="min-width: 24px"
       >
         <span
-          v-if="goalReached"
           class="icon has-text-white ml-1"
         >
           <i class="fas fa-check fa-lg"></i>
@@ -126,6 +126,8 @@ window.app = new Vue({
       actualToday: '{{ actual_today|safe }}',
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
+      isoWeekNumber: '{{ iso_weeknumber }}',
+      isoYear: '{{ iso_year }}',
       strings: {{ strings|safe }},
       today: '{{ today|safe }}',
       urls: {{ urls|safe }},

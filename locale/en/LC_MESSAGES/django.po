@@ -52,4 +52,4 @@ msgstr ""
 
 #: .\weeklygoal\apps\activities\views.py:127
 msgid "Week"
-msgstr "KW"
+msgstr "Week"

@@ -103,11 +103,15 @@ def app(request):
     ).order_by("-created_at")
     serialized_events = [serialize_event(event) for event in current_week_events]
 
+    iso_year, iso_weeknumber, iso_weekday = today.isocalendar()
+
     context = {
         "activities": serialized_activities,
         "actual_today": format_date(datetime.now().date()),
         "current_week_events": serialized_events,
         "current_week": current_week,
+        "iso_weeknumber": iso_weeknumber,
+        "iso_year": iso_year,
         "today": format_date(today),
         "urls": {
             "create_event": reverse("create_event"),
@@ -118,11 +122,7 @@ def app(request):
                 "0", ""
             ),
         },
-        "strings": {
-            "today": _("Today"),
-            "next_week": _("Next week"),
-            "previous_week": _("Previous week"),
-        },
+        "strings": {"today": _("Today"), "week": _("Week"),},
     }
     return render(request, "app.html", context,)
 
