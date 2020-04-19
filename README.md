@@ -1,6 +1,6 @@
 # Weekly Goal
 
-A small weekl activity tracker.
+A small weekly activity tracker.
 
 ## Look & Feel
 
