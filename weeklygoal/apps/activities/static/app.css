@@ -106,6 +106,10 @@ html {
   margin-right: 8px;
 }
 
+.mr-3 {
+  margin-right: 16px;
+}
+
 .mr-auto {
   margin-right: auto;
 }

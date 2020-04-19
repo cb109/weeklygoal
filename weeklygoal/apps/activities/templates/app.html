@@ -7,7 +7,7 @@
 {% verbatim %}
 <div id="app">
   <div
-    class="grid dbg2"
+    class="grid"
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
     <div
@@ -30,6 +30,17 @@
         <p class="control">
           <button
             class="button has-color-bg has-text-white"
+            :title="strings.today"
+            @click="goToActualToday(actualToday)"
+          >
+            <span class="icon">
+              <i class="fas fa-calendar-day"></i>
+            </span>
+          </button>
+        </p>
+        <p class="control">
+          <button
+            class="button has-color-bg has-text-white"
             @click="goToNextWeek(today)"
           >
             <span class="icon">
@@ -39,49 +50,63 @@
         </p>
       </div>
       <div
-        class="field has-addons"
-      >
-        <p class="control">
-          <button
-            class="button has-color-bg has-text-white"
-            @click="goToActualToday(actualToday)"
-          >
-            <span>
-              {{ strings.today }}
-            </span>
-          </button>
-        </p>
-      </div>
-      <div
-        class="field has-addons"
-      >
-        <p class="control">
-          <button
-            class="button ml-2 has-color-bg has-text-white"
-            :title="'Logout ' + username"
-            @click="confirmLogout()"
-          >
-            <span class="icon has-white-text">
-              <i class="fas fa-sign-out-alt"></i>
-            </span>
-          </button>
-        </p>
-      </div>
-      <div
-        class="has-color-bg has-text-white ml-auto mr-2"
+        ref="dropdown"
+        class="dropdown"
         style="margin-bottom: 12px"
+        :class="{'is-active': showDropdown}"
       >
-        {{ isoYear }}, {{ strings.week }} {{ isoWeekNumber }}
+        <div class="dropdown-trigger">
+          <button
+            class="button has-text-white has-color-bg"
+            @click="showDropdown = !showDropdown"
+          >
+            <span class="icon">
+              <i class="fas fa-ellipsis-v"></i>
+            </span>
+          </button>
+        </div>
+        <div
+          id="dropdown-menu"
+          class="dropdown-menu"
+          role="menu"
+        >
+          <div class="dropdown-content">
+            <a
+              class="dropdown-item"
+              @click="goToAdminPage()"
+            >
+              Admin
+            </a>
+            <hr class="dropdown-divider">
+            <a
+              href="#" class="dropdown-item"
+              @click="confirmLogout()"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+              Logout: {{ username }}
+            </a>
+          </div>
+        </div>
       </div>
       <div
-        v-if="goalReached"
-        class="mb-1"
-        style="min-width: 24px"
+        class="has-text-white ml-auto mr-2"
+        style="display: flex; align-items: center; margin-bottom: 16px"
       >
         <span
-          class="icon has-text-white ml-1"
+          :class="{'mr-3': !goalReached, 'mr-2': goalReached}"
+        >
+          {{ strings.week }} {{ isoWeekNumber }}
+        </span>
+        <span
+          v-if="goalReached"
+          class="icon has-text-success mr-3"
         >
           <i class="fas fa-check fa-lg"></i>
+        </span>
+        <span
+          class="is-size-4"
+        >
+          {{ numEvents }} / {{ goal }}
         </span>
       </div>
     </div>
@@ -166,7 +191,9 @@ window.app = new Vue({
       urls: {{ urls|safe }},
       username: '{{ username|safe }}',
       // Frontend data
-      cells: {}
+      cells: {},
+      listener: null,
+      showDropdown: false,
     };
   },
   computed: {
@@ -180,7 +207,22 @@ window.app = new Vue({
   created() {
     this.populateGrid();
   },
+  mounted() {
+    this.registerDropdownClickOutsideHandler();
+  },
+  beforeDestroy() {
+    window.removeEventListener('click', this.listener);
+  },
   methods: {
+    registerDropdownClickOutsideHandler() {
+      const vm = this;
+      this.listener = function(e) {
+        if (!vm.$refs.dropdown.contains(e.target)) {
+          vm.showDropdown = false;
+        }
+      };
+      window.addEventListener('click', this.listener);
+    },
     doesEventExist(date, activityId) {
       for (let i = 0; i < this.currentWeekEvents.length; i++) {
         const event = this.currentWeekEvents[i];
@@ -258,6 +300,9 @@ window.app = new Vue({
     goToNextWeek(today) {
       this.redirectChangeWeek(today, 'next');
     },
+    goToAdminPage(today) {
+      this.openInNewTab('/admin');
+    },
     confirmLogout() {
       const confirmed = confirm('Logout '+ this.username + '?');
       if (confirmed) {
@@ -267,6 +312,10 @@ window.app = new Vue({
     logout() {
       window.location.replace(this.urls.logout);
     },
+    openInNewTab(url) {
+      const win = window.open(url, '_blank');
+      win.focus();
+    }
   }
 });
 
