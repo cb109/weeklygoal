@@ -130,6 +130,7 @@
         v-for="(activity, x) in activities"
         :key="activity + x + y"
         class="col cell activity clickable"
+        :title="activity.name"
         :class="{'has-border-app': weekDay.date == today}"
         @click="toggleCell(weekDay.date, activity.id)"
       >
