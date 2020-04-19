@@ -152,7 +152,7 @@ def create_event(request):
 @login_required
 @require_http_methods(("DELETE",))
 def delete_event(request, event_id):
-    Event.objects.get(id=event_id, user=request.user).delete()
+    Event.objects.get(id=event_id, activity__user=request.user).delete()
     return HttpResponse(status=204)
 
 
