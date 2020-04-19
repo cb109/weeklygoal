@@ -3,16 +3,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-    content="
-      width=device-width,
-      initial-scale=1,
-      minimum-scale=1,
-      maximum-scale=1,
-      user-scalable=no,
-      minimal-ui
-    "
-  >
+    <meta name="viewport" content=" width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="manifest" href="{% static "/manifest.json" %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static "icon-192x192.png" %}">
     <link rel="stylesheet" href="{% static "bulma/0.8.2/bulma.min.css" %}">
     <link rel="stylesheet" href="{% static "app.css" %}">
     <script type="text/javascript" src="{% static "vue/2.6.10/vue.min.js" %}"></script>
