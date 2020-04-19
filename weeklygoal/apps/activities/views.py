@@ -140,7 +140,8 @@ def app(request):
 def create_event(request):
     data = json.loads(request.body.decode("utf-8"))
 
-    activity = Activity.objects.get(id=data["activity"])
+    activity_id = data["activity"]
+    activity = Activity.objects.get(id=activity_id, user=request.user)
     date = string_to_date(data["date"])
 
     event = Event.objects.create(activity=activity, created_at=date)
@@ -151,7 +152,7 @@ def create_event(request):
 @login_required
 @require_http_methods(("DELETE",))
 def delete_event(request, event_id):
-    Event.objects.get(id=event_id).delete()
+    Event.objects.get(id=event_id, user=request.user).delete()
     return HttpResponse(status=204)
 
 
