@@ -5,9 +5,11 @@ html {
 .has-color-bg {
   background: #8345BE !important;
 }
+
 .has-text-app {
   color: #ffcd19 !important;
 }
+
 .has-border-app {
   border-width: 2px !important;
   border-color: #ffcd19 !important;

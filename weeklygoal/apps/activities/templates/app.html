@@ -117,9 +117,17 @@
     >
       <div
         class="col day has-text-white has-text-weight-semibold"
-        :class="{'has-text-app': weekDay.date == today}"
+        :class="{
+          'has-text-app': weekDay.date == today,
+        }"
       >
         <div>
+          <span
+            v-if="weekDay.date == actualToday"
+            class="icon"
+          >
+            <i class="fas fa-calendar-day"></i>
+          </span>
           {{ weekDay.day }}
         </div>
         <div class="is-size-7">
@@ -131,7 +139,9 @@
         :key="activity + x + y"
         class="col cell activity clickable"
         :title="activity.name"
-        :class="{'has-border-app': weekDay.date == today}"
+        :class="{
+          'has-border-app': weekDay.date == today,
+        }"
         @click="toggleCell(weekDay.date, activity.id)"
       >
         <div class="image">
@@ -297,8 +307,8 @@ window.app = new Vue({
     goToPreviousWeek(today) {
       this.redirectChangeWeek(today, 'previous');
     },
-    goToActualToday(actual_today) {
-      const nextUrl = "/?day=" + actual_today;
+    goToActualToday(actualToday) {
+      const nextUrl = "/?day=" + actualToday;
       window.location.replace(nextUrl);
     },
     goToNextWeek(today) {
