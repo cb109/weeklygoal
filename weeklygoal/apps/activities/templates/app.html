@@ -224,14 +224,17 @@ window.app = new Vue({
       };
       window.addEventListener('click', this.listener);
     },
-    doesEventExist(date, activityId) {
+    getEvent(date, activityId) {
       for (let i = 0; i < this.currentWeekEvents.length; i++) {
         const event = this.currentWeekEvents[i];
         if (event.date == date && event.activity == activityId) {
-          return true;
+          return event;
         }
       }
-      return false;
+      return null;
+    },
+    doesEventExist(date, activityId) {
+      return this.getEvent(date, activityId) !== null;
     },
     getCellKey(date, activityId) {
       return `${date}_${activityId}`;
@@ -251,9 +254,9 @@ window.app = new Vue({
       });
     },
     toggleCell(date, activityId) {
-      const hasEvent = this.getCell(date, activityId);
+      const event = this.getEvent(date, activityId);
+      const hasEvent = event !== null;
       if (hasEvent) {
-        const event = this.currentWeekEvents.filter(event => event.date == date)[0];
         this.httpDeleteEvent(event.id);
       }
       else {
