@@ -203,8 +203,15 @@ window.app = new Vue({
       username: '{{ username|safe }}',
       // Frontend data
       cells: {},
-      listener: null,
       showDropdown: false,
+      listeners: {
+        clickOutside: null,
+        touchStart: null,
+        touchMove: null,
+      },
+      swipe: {
+        xDown: null,
+      },
     };
   },
   computed: {
@@ -220,19 +227,70 @@ window.app = new Vue({
   },
   mounted() {
     this.registerDropdownClickOutsideHandler();
+    this.registerSwipeHandlers();
   },
   beforeDestroy() {
-    window.removeEventListener('click', this.listener);
+    this.deregisterDropdownClickOutsideHandler
+    this.deregisterSwipeHandlers();
   },
   methods: {
     registerDropdownClickOutsideHandler() {
       const vm = this;
-      this.listener = function(e) {
+      this.listeners.clickOutside = function(e) {
         if (!vm.$refs.dropdown.contains(e.target)) {
           vm.showDropdown = false;
         }
       };
-      window.addEventListener('click', this.listener);
+      window.addEventListener('click', this.listeners.clickOutside);
+    },
+    registerSwipeHandlers() {
+      // From: https://stackoverflow.com/a/23230280
+      const vm = this;
+
+      function handleTouchStart(event) {
+        vm.swipe.xDown = event.touches[0].clientX;
+      };
+
+      function handleTouchMove(event) {
+        if (!vm.swipe.xDown) {
+          return;
+        }
+        var xUp = event.touches[0].clientX;
+        var xDiff = vm.swipe.xDown - xUp;
+        if (xDiff > 0) {
+          vm.onSwipeLeft();
+        }
+        else {
+          vm.onSwipeRight();
+        }
+        vm.swipe.xDown = null;
+      };
+
+      this.listeners.touchStart = document.addEventListener(
+        'touchstart', handleTouchStart, false
+      );
+      this.listeners.touchMove = document.addEventListener(
+        'touchmove', handleTouchMove, false
+      );
+    },
+    deregisterDropdownClickOutsideHandler() {
+      if (this.listeners.clickOutside) {
+        window.removeEventListener('click', this.listeners.clickOutside);
+      }
+    },
+    deregisterSwipeHandlers() {
+      if (this.listeners.touchStart) {
+        window.removeEventListener('touchstart', this.listeners.touchStart);
+      }
+      if (this.listeners.touchMove) {
+        window.removeEventListener('touchmove', this.listeners.touchMove);
+      }
+    },
+    onSwipeLeft() {
+      this.goToNextWeek(this.today);
+    },
+    onSwipeRight() {
+      this.goToPreviousWeek(this.today);
     },
     getEvent(date, activityId) {
       for (let i = 0; i < this.currentWeekEvents.length; i++) {
