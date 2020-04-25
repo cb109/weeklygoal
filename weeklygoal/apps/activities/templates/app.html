@@ -131,7 +131,7 @@
       <div
         class="col day has-text-white has-text-weight-semibold"
         :class="{
-          'has-text-app': weekDay.date == today,
+          'has-text-highlight': weekDay.date == today,
         }"
       >
         <div style="white-space: nowrap">
@@ -153,7 +153,7 @@
         class="col cell activity clickable"
         :title="activity.name"
         :class="{
-          'has-border-app': weekDay.date == today,
+          'has-border-highlight': weekDay.date == today,
         }"
         @click="toggleCell(weekDay.date, activity.id)"
       >
@@ -205,6 +205,7 @@ window.app = new Vue({
       // Backend data
       activities: {{ activities|safe }},
       actualToday: '{{ actual_today|safe }}',
+      colors: {{ colors|safe }},
       currentWeek: {{ current_week|safe }},
       currentWeekEvents: {{ current_week_events|safe }},
       goal: {{ goal|safe }},
@@ -232,6 +233,7 @@ window.app = new Vue({
   },
   created() {
     this.populateGrid();
+    this.applyStyle(this.generateStyleDef());
   },
   mounted() {
     this.registerDropdownClickOutsideHandler();
@@ -243,6 +245,32 @@ window.app = new Vue({
     this.deregisterSwipeHandlers();
   },
   methods: {
+    generateStyleDef() {
+      return `
+        html {
+          background: ${this.colors.background};
+        }
+
+        .has-color-bg {
+          background: ${this.colors.background} !important;
+        }
+
+        .has-text-highlight {
+          color: ${this.colors.highlight} !important;
+        }
+
+        .has-border-highlight {
+          border-width: 2px !important;
+          border-color: ${this.colors.highlight} !important;
+        }
+      `;
+    },
+    applyStyle(styleDef) {
+      const style = document.createElement('style');
+      style.type = 'text/css';
+      document.head.appendChild(style);
+      style.innerHTML = styleDef;
+    },
     animateWeekStatusInitially() {
       setTimeout(() => this.initialWaitingDone= true, 250);
     },
