@@ -6,7 +6,7 @@ While it will work in any browser, the interface is meant to be used on a mobile
 
 ## Look & Feel
 
-![](https://i.imgur.com/cQ5nGEq.png)
+![](https://i.imgur.com/FtmxNiN.png)
 
 ## Features
 
