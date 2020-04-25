@@ -1,8 +1,11 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext as _
 from filer.fields.image import FilerImageField
+
+from colorfield.fields import ColorField
 
 
 class BaseModel(models.Model):
@@ -34,6 +37,8 @@ class UserSettings(BaseModel):
         "auth.User", on_delete=models.CASCADE, related_name="settings"
     )
     goal = models.IntegerField(default=5)
+    background_color = ColorField(default=settings.COLOR_BACKGROUND_DEFAULT)
+    highlight_color = ColorField(default=settings.COLOR_HIGHLIGHT_DEFAULT)
 
 
 class Event(BaseModel):

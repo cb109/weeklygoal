@@ -107,8 +107,12 @@ def app(request):
 
     try:
         goal = user.settings.goal
+        background_color = user.settings.background_color
+        highlight_color = user.settings.highlight_color
     except UserSettings.DoesNotExist:
         goal = 5
+        background_color = settings.COLOR_BACKGROUND_DEFAULT
+        highlight_color = settings.COLOR_HIGHLIGHT_DEFAULT
 
     context = {
         "activities": serialized_activities,
@@ -130,7 +134,8 @@ def app(request):
                 "0", ""
             ),
         },
-        "strings": {"today": _("Today"), "week": _("Week"),},
+        "strings": {"today": _("Today"), "week": _("Week")},
+        "colors": {"background": background_color, "highlight": highlight_color},
     }
     return render(request, "app.html", context,)
 

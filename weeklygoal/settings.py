@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "filer",
     "mptt",
+    "colorfield",
     "weeklygoal.apps.activities",
 ]
 
@@ -133,3 +134,6 @@ DATE_FORMAT = "%d.%m.%Y"
 LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 1  # One year
+
+COLOR_BACKGROUND_DEFAULT = "#8345BE"
+COLOR_HIGHLIGHT_DEFAULT = "#FFCD19"
