@@ -10,6 +10,7 @@
     class="grid"
     :style="{'max-width': 90 + (activities.length * 110) + 'px'}"
   >
+    <!-- Controls -->
     <div
       class="row goal mt-2 mb-1"
       style="max-height: 30px"
@@ -88,28 +89,40 @@
           </div>
         </div>
       </div>
+      <!-- Week Status -->
       <div
         class="has-text-white ml-auto mr-2"
         style="display: flex; align-items: center; margin-bottom: 16px"
       >
-        <span
-          :class="{'mr-3': !goalReached, 'mr-2': goalReached}"
+        <transition
+          name="slide-x"
+          mode="in-out"
         >
-          {{ strings.week }} {{ isoWeekNumber }}
-        </span>
-        <span
-          v-if="goalReached"
-          class="icon has-text-success mr-3"
-        >
-          <i class="fas fa-check fa-lg"></i>
-        </span>
-        <span
-          class="is-size-4"
-        >
-          {{ numEvents }} / {{ goal }}
-        </span>
+          <span
+            v-if="initialWaitingDone"
+            style="display: flex; align-items: center"
+          >
+            <span
+              :class="{'mr-3': !goalReached, 'mr-2': goalReached}"
+            >
+              {{ strings.week }} {{ isoWeekNumber }}
+            </span>
+            <span
+              v-if="goalReached"
+              class="icon has-text-success mr-3"
+            >
+              <i class="fas fa-check fa-lg"></i>
+            </span>
+            <span
+              class="is-size-4"
+            >
+              {{ numEvents }} / {{ goal }}
+            </span>
+          </span>
+        </transition>
       </div>
     </div>
+    <!-- Week Table -->
     <div
       v-for="(weekDay, y) in currentWeek"
       :key="weekDay.date + y"
@@ -121,7 +134,7 @@
           'has-text-app': weekDay.date == today,
         }"
       >
-        <div>
+        <div style="white-space: nowrap">
           <span
             v-if="weekDay.date == actualToday"
             class="icon"
@@ -203,15 +216,10 @@ window.app = new Vue({
       username: '{{ username|safe }}',
       // Frontend data
       cells: {},
+      initialWaitingDone: false,
       showDropdown: false,
-      listeners: {
-        clickOutside: null,
-        touchStart: null,
-        touchMove: null,
-      },
-      swipe: {
-        xDown: null,
-      },
+      hammer: null,
+      clickOutsideListener: null,
     };
   },
   computed: {
@@ -228,69 +236,46 @@ window.app = new Vue({
   mounted() {
     this.registerDropdownClickOutsideHandler();
     this.registerSwipeHandlers();
+    this.animateWeekStatusInitially()
   },
   beforeDestroy() {
     this.deregisterDropdownClickOutsideHandler
     this.deregisterSwipeHandlers();
   },
   methods: {
+    animateWeekStatusInitially() {
+      setTimeout(() => this.initialWaitingDone= true, 250);
+    },
     registerDropdownClickOutsideHandler() {
       const vm = this;
-      this.listeners.clickOutside = function(e) {
+      this.clickOutsideListener = function(e) {
         if (!vm.$refs.dropdown.contains(e.target)) {
           vm.showDropdown = false;
         }
       };
-      window.addEventListener('click', this.listeners.clickOutside);
+      window.addEventListener('click', this.clickOutsideListener);
     },
     registerSwipeHandlers() {
-      // From: https://stackoverflow.com/a/23230280
       const vm = this;
+      this.hammer = new Hammer(this.$el);
 
-      function handleTouchStart(event) {
-        vm.swipe.xDown = event.touches[0].clientX;
-      };
-
-      function handleTouchMove(event) {
-        if (!vm.swipe.xDown) {
-          return;
+      this.hammer.on('swipeleft swiperight', function(event) {
+        if (event.type === 'swipeleft') {
+          vm.goToNextWeek(vm.today);
         }
-        var xUp = event.touches[0].clientX;
-        var xDiff = vm.swipe.xDown - xUp;
-        if (xDiff > 0) {
-          vm.onSwipeLeft();
+        else if (event.type === 'swiperight') {
+          vm.goToPreviousWeek(vm.today);
         }
-        else {
-          vm.onSwipeRight();
-        }
-        vm.swipe.xDown = null;
-      };
-
-      this.listeners.touchStart = document.addEventListener(
-        'touchstart', handleTouchStart, false
-      );
-      this.listeners.touchMove = document.addEventListener(
-        'touchmove', handleTouchMove, false
-      );
+      });
     },
     deregisterDropdownClickOutsideHandler() {
-      if (this.listeners.clickOutside) {
-        window.removeEventListener('click', this.listeners.clickOutside);
+      if (this.clickOutsideListener) {
+        window.removeEventListener('click', this.clickOutsideListener);
       }
     },
     deregisterSwipeHandlers() {
-      if (this.listeners.touchStart) {
-        window.removeEventListener('touchstart', this.listeners.touchStart);
-      }
-      if (this.listeners.touchMove) {
-        window.removeEventListener('touchmove', this.listeners.touchMove);
-      }
-    },
-    onSwipeLeft() {
-      this.goToNextWeek(this.today);
-    },
-    onSwipeRight() {
-      this.goToPreviousWeek(this.today);
+      this.hammer.off('swipeleft swiperight');
+      this.hammer.destroy();
     },
     getEvent(date, activityId) {
       for (let i = 0; i < this.currentWeekEvents.length; i++) {

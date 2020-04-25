@@ -77,6 +77,16 @@ html {
   transform: scale(1.2);
 }
 
+.slide-x-enter-active,
+.slide-x-leave-active {
+  transition: all .25s;
+}
+.slide-x-enter,
+.slide-x-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
 .image {
   display: flex;
   height: 100%;
