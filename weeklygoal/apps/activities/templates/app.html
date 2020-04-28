@@ -107,12 +107,17 @@
             >
               {{ strings.week }} {{ isoWeekNumber }}
             </span>
-            <span
-              v-if="goalReached"
-              class="icon has-text-checkmark mr-3"
+            <transition
+              name="fade"
+              mode="out-in"
             >
-              <i class="fas fa-check fa-lg"></i>
-            </span>
+              <span
+                v-if="goalReached"
+                class="icon has-text-checkmark mr-3"
+              >
+                <i class="fas fa-check fa-lg"></i>
+              </span>
+            </transition>
             <span
               class="is-size-4"
             >
