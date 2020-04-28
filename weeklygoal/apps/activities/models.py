@@ -50,6 +50,9 @@ class UserSettings(BaseModel):
     text_color = ColorField(default=settings.COLOR_TEXT_DEFAULT)
     checkmark_color = ColorField(default=settings.COLOR_CHECKMARK_DEFAULT)
 
+    def __str__(self):
+        return f"UserSettings for {self.user}"
+
 
 class Event(BaseModel):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
