@@ -21,6 +21,9 @@ class BaseModel(models.Model):
 
 
 class Activity(BaseModel):
+    class Meta:
+        verbose_name_plural = "Activities"
+
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     name = models.CharField(max_length=128)
@@ -33,6 +36,9 @@ class Activity(BaseModel):
 
 
 class UserSettings(BaseModel):
+    class Meta:
+        verbose_name_plural = "User settings"
+
     user = models.OneToOneField(
         "auth.User", on_delete=models.CASCADE, related_name="settings"
     )
