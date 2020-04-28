@@ -109,10 +109,14 @@ def app(request):
         goal = user.settings.goal
         background_color = user.settings.background_color
         highlight_color = user.settings.highlight_color
+        text_color = user.settings.text_color
+        checkmark_color = user.settings.checkmark_color
     except UserSettings.DoesNotExist:
-        goal = 5
+        goal = settings.GOAL_DEFAULT
         background_color = settings.COLOR_BACKGROUND_DEFAULT
         highlight_color = settings.COLOR_HIGHLIGHT_DEFAULT
+        text_color = settings.COLOR_TEXT_DEFAULT
+        checkmark_color = settings.COLOR_CHECKMARK_DEFAULT
 
     context = {
         "activities": serialized_activities,
@@ -135,7 +139,12 @@ def app(request):
             ),
         },
         "strings": {"today": _("Today"), "week": _("Week")},
-        "colors": {"background": background_color, "highlight": highlight_color},
+        "colors": {
+            "background": background_color,
+            "highlight": highlight_color,
+            "text": text_color,
+            "checkmark": checkmark_color,
+        },
     }
     return render(request, "app.html", context,)
 

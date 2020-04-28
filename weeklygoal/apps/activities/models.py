@@ -36,9 +36,13 @@ class UserSettings(BaseModel):
     user = models.OneToOneField(
         "auth.User", on_delete=models.CASCADE, related_name="settings"
     )
+
     goal = models.IntegerField(default=5)
+
     background_color = ColorField(default=settings.COLOR_BACKGROUND_DEFAULT)
     highlight_color = ColorField(default=settings.COLOR_HIGHLIGHT_DEFAULT)
+    text_color = ColorField(default=settings.COLOR_TEXT_DEFAULT)
+    checkmark_color = ColorField(default=settings.COLOR_CHECKMARK_DEFAULT)
 
 
 class Event(BaseModel):
