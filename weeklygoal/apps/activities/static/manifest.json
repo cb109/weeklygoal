@@ -1,8 +1,6 @@
 {
   "name": "Weekly Goal",
   "short_name": "Weekly Goal",
-  "theme_color": "#8345be",
-  "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/",
   "icons": [

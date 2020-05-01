@@ -5,21 +5,21 @@
 {% block content %}
 
 <div
-  class="has-text-white container is-fluid dbg2"
+  class="container is-fluid"
   style="margin-top: 100px; max-width: 480px"
 >
-  <h2 class="title has-text-white">Login</h2>
-  <h3 class="subtitle has-text-white">Weekly Goal</h3>
+  <h2 class="title">Login</h2>
+  <h3 class="subtitle">Weekly Goal</h3>
   <form class="form" method="post">
     {% csrf_token %}
     <div class="field">
-      <label class="label has-text-white">User</label>
+      <label class="label">User</label>
       <div class="control">
         <input class="input" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
       </div>
     </div>
     <div class="field">
-      <label class="label has-text-white">Password</label>
+      <label class="label">Password</label>
       <div class="control">
         <input class="input" type="password" name="password" autocomplete="current-password" required="" id="id_password">
       </div>
