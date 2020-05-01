@@ -133,7 +133,7 @@ DATE_FORMAT = "%d.%m.%Y"
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 1  # One year
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365 * 100  # One hundred years
 
 GOAL_DEFAULT = 5
 
