@@ -134,8 +134,9 @@
       class="row week"
     >
       <div
-        class="col day has-text-color has-text-weight-semibold"
+        class="col day has-text-weight-semibold"
         :class="{
+          'has-text-color': weekDay.date != today,
           'has-text-highlight': weekDay.date == today,
         }"
       >
