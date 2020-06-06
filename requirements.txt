@@ -11,7 +11,7 @@ django-filer==1.7.0       # via -r requirements.in
 django-js-asset==1.2.2    # via django-mptt
 django-mptt==0.11.0       # via django-filer
 django-polymorphic==2.1.2  # via django-filer
-django==3.0.5             # via -r requirements.in, django-filer, django-mptt, django-polymorphic, easy-thumbnails
+django==3.0.7             # via -r requirements.in, django-filer, django-mptt, django-polymorphic, easy-thumbnails
 easy-thumbnails==2.7      # via django-filer
 pillow==7.1.1             # via easy-thumbnails
 pip-tools==5.0.0          # via -r requirements.in
