@@ -4,22 +4,45 @@
 #
 #    pip-compile
 #
-asgiref==3.2.7            # via django
-click==7.1.1              # via pip-tools
-django-colorfield==0.3.0  # via -r requirements.in
-django-filer==1.7.0       # via -r requirements.in
-django-js-asset==1.2.2    # via django-mptt
-django-mptt==0.11.0       # via django-filer
-django-polymorphic==2.1.2  # via django-filer
-django==3.0.5             # via -r requirements.in, django-filer, django-mptt, django-polymorphic, easy-thumbnails
-easy-thumbnails==2.7      # via django-filer
-pillow==7.1.1             # via easy-thumbnails
-pip-tools==5.0.0          # via -r requirements.in
-pytz==2019.3              # via django
-six==1.14.0               # via django-filer, pip-tools
-sqlparse==0.3.1           # via django
-unidecode==1.1.1          # via django-filer
-whitenoise==5.0.1         # via -r requirements.in
+asgiref==3.2.7
+    # via django
+click==7.1.1
+    # via pip-tools
+django-colorfield==0.3.0
+    # via -r requirements.in
+django-filer==1.7.0
+    # via -r requirements.in
+django-js-asset==1.2.2
+    # via django-mptt
+django-mptt==0.11.0
+    # via django-filer
+django-polymorphic==2.1.2
+    # via django-filer
+django==3.0.12
+    # via
+    #   -r requirements.in
+    #   django-filer
+    #   django-mptt
+    #   django-polymorphic
+    #   easy-thumbnails
+easy-thumbnails==2.7
+    # via django-filer
+pillow==7.1.1
+    # via easy-thumbnails
+pip-tools==5.0.0
+    # via -r requirements.in
+pytz==2019.3
+    # via django
+six==1.14.0
+    # via
+    #   django-filer
+    #   pip-tools
+sqlparse==0.3.1
+    # via django
+unidecode==1.1.1
+    # via django-filer
+whitenoise==5.0.1
+    # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
