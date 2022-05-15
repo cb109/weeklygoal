@@ -393,7 +393,10 @@ window.app = new Vue({
       this.redirectChangeWeek(today, 'previous');
     },
     goToActualToday(actualToday) {
-      const nextUrl = "/?day=" + actualToday;
+      // Do not pin a day as especially in a PWA it can lead to
+      // situations where 'today' is pinned to an outdated day for a
+      // longer time, which can be very confusing for the user.
+      const nextUrl = "/";
       window.location.replace(nextUrl);
     },
     goToNextWeek(today) {
