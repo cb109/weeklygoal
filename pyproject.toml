@@ -1,0 +1,13 @@
+[project]
+name = "weeklygoal"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.0.6",
+    "django-colorfield>=0.14.0",
+    "django-filer>=3.4.4",
+    "django-mptt>=0.18.0",
+    "whitenoise>=6.12.0",
+]
